@@ -35,8 +35,7 @@ commander
   .description('init project')
   .option('-w, --write <path>', 'where to overwrite')
   .action(function(projectName, options) {
-    const App = importJsx('./App.js');
-    render(React.createElement(App));
+    // get todir
   });
 commander.on('command:*', function() {
   console.error('Invalid command: %s\nSee --help for a list of available commands.', commander.args.join(' '));
