@@ -7,8 +7,19 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
-            "program": "${workspaceFolder}\\src\\cli.js"
+            "name": "generator-admin-cli",
+            // "program": "${workspaceRoot}/node_modules/ts-node/dist/bin.js",
+            "args": [
+                "${workspaceRoot}/src/index.tsx" // 入口文件
+            ],
+            "runtimeArgs": [
+                "--nolazy",
+                "-r",
+                "ts-node/register"
+            ],
+            "sourceMaps": true,
+            "cwd": "${workspaceRoot}",
+            "protocol": "inspector"
         }
     ]
 }
