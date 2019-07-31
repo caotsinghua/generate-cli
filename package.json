@@ -1,6 +1,6 @@
 {
-  "name": "generate-admin",
-  "version": "1.2.1",
+  "name": "@tssword/generate-admin",
+  "version": "1.0.0",
   "description": "",
   "engines": {
     "node": ">=10.0.0"
