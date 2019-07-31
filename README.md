@@ -8,3 +8,5 @@
 - usage
   - `generate-admin init project-name` project-name 可以是相对路径
   - `generate` 使用图形界面
+  ![示例](/images/img.png)
+

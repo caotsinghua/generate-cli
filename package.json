@@ -7,7 +7,7 @@
   },
   "bin": {
     "generate-admin": "./cli.js",
-    "generate":"./dist/index.js"
+    "generate": "./dist/index.js"
   },
   "scripts": {
     "build": "rm -rf dist & tsc",
