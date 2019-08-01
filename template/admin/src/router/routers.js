@@ -1,4 +1,5 @@
 import Main from '@/components/main';
+import config from '../config';
 // import parentView from '@/components/parent-view';
 
 /**
@@ -16,7 +17,40 @@ import Main from '@/components/main';
  *  beforeCloseName: (-) 设置该字段，则在关闭当前tab页时会去'@/router/before-close.js'里寻找该字段名对应的方法，作为关闭前的钩子函数
  * }
  */
-
+const homeRoute = {
+    path: '/home',
+    name: config.homeName,
+    meta: {
+        title: '首页',
+        icon: 'md-home',
+        hideInMenu: true,
+        notCache: true
+    },
+    component: () => import('@/view/home/home.vue')
+};
+const appRoutes = [
+    {
+        path: '/articles',
+        name: 'articles',
+        redirect: '/articles/table',
+        meta: {
+            title: 'articles',
+            icon: 'md-albums'
+        },
+        component: Main,
+        children: [
+            {
+                path: '/articles/table',
+                name: 'articles-table',
+                meta: {
+                    title: 'articles',
+                    icon: 'md-albums'
+                },
+                component: () => import('@/view/articles/articles-table.vue')
+            }
+        ]
+    }
+];
 export default [
     {
         path: '/login',
@@ -36,21 +70,9 @@ export default [
             hideInMenu: true,
             notCache: true
         },
-        children: [
-            {
-                path: '/home',
-                name: 'home',
-                meta: {
-                    hideInMenu: true,
-                    title: '首页',
-                    notCache: true,
-                    icon: 'md-home'
-                },
-                component: () => import('@/view/home/home')
-            }
-        ]
+        children: [homeRoute]
     },
-
+    ...appRoutes,
     {
         path: '/401',
         name: 'error_401',

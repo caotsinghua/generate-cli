@@ -39,12 +39,36 @@ Vue.prototype.$config = config;
  */
 importDirective(Vue);
 Vue.directive('clickOutside', clickOutside);
-iView.Message.info('info');
-/* eslint-disable no-new */
-new Vue({
-    el: '#app',
-    router,
-    i18n,
-    store,
-    render: h => h(App)
-});
+
+const main = async () => {
+    iView.Spin.show({
+        render: h => {
+            return h('div', [
+                h('Icon', {
+                    class: 'index-spin-load',
+                    props: {
+                        type: 'ios-loading',
+                        size: 18
+                    }
+                }),
+                h('div', '正在加载，请稍后...')
+            ]);
+        }
+    });
+    try {
+        await store.dispatch('getUserStatus');
+    } catch (e) {
+        iView.Message.error(e.message || '获取登录态错误');
+    } finally {
+        /* eslint-disable no-new */
+        new Vue({
+            el: '#app',
+            router,
+            i18n,
+            store,
+            render: h => h(App)
+        });
+        iView.Spin.hide();
+    }
+};
+main();

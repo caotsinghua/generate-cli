@@ -40,12 +40,12 @@ module.exports = {
         port: 8081,
         disableHostCheck: true,
         proxy: {
-            '/ebg/api': {
+            '/api': {
                 target: 'http://172.31.225.15:5000',
-                ws: false,
+                ws: false, // 关闭websocket
                 changeOrigin: true,
                 pathRewrite: {
-                    '^/ebg/api/': '/ebg/api/'
+                    '^/api/': '/api/'
                 }
             }
         }

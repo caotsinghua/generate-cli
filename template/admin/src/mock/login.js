@@ -31,3 +31,10 @@ export const getUserInfo = () => {
 export const logout = () => {
     return null;
 };
+
+export const getUserStatus = () => {
+    return {
+        success: true,
+        data: USER_MAP['super_admin']
+    };
+};

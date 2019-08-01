@@ -1,11 +1,12 @@
-import { login, logout, getUserInfo } from '@/api/user';
+import { login, logout, getUserInfo, getUserStatus } from '@/api/user';
 import { setToken, getToken } from '@/libs/util';
 
 const state = {
     userInfo: {},
     token: getToken(),
     access: '',
-    hasGetInfo: false
+    hasGetInfo: false,
+    hasLogged: false
 };
 
 const mutations = {
@@ -26,6 +27,9 @@ const mutations = {
     },
     setHasGetInfo(state, status) {
         state.hasGetInfo = status;
+    },
+    setHasLogged(state, status) {
+        state.hasLogged = status;
     }
 };
 const actions = {
@@ -50,6 +54,17 @@ const actions = {
         commit('setAccess', data.access);
         commit('setHasGetInfo', true);
         return data;
+    },
+    async getUserStatus({ commit }) {
+        const res = await getUserStatus();
+        const {
+            data: { data, success }
+        } = res;
+        if (success && data) {
+            commit('setUserInfo', data);
+            commit('setAccess', data.access);
+            commit('setHasLogged', true);
+        }
     }
 };
 

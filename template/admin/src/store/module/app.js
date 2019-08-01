@@ -29,13 +29,10 @@ export default {
         breadCrumbList: [],
         tagNavList: [],
         homeRoute: {},
-        local: localRead('local'),
-        errorList: [],
-        hasReadErrorPage: false
+        local: localRead('local')
     },
     getters: {
-        menuList: (state, getters, rootState) => getMenuByRouter(routers, rootState.user.access),
-        errorCount: state => state.errorList.length
+        menuList: (state, getters, rootState) => getMenuByRouter(routers, rootState.user.access)
     },
     mutations: {
         setBreadCrumb(state, route) {

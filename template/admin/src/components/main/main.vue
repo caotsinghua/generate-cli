@@ -19,7 +19,10 @@
             >
                 <!-- 需要放在菜单上面的内容，如Logo，写在side-menu标签内部，如下 -->
                 <div class="logo-con">
-                    <img v-show="!collapsed" :src="maxLogo" key="max-logo" />
+                    <div v-show="!collapsed" class="max-logo">
+                        <img :src="minLogo" key="max-logo" />
+                        <h1>{{ $config.title }}</h1>
+                    </div>
                     <img v-show="collapsed" :src="minLogo" key="min-logo" />
                 </div>
             </side-menu>
@@ -59,8 +62,7 @@ import ErrorStore from './components/error-store';
 import { mapMutations, mapActions, mapGetters } from 'vuex';
 import { getNewTagList, routeEqual } from '@/libs/util';
 import routers from '@/router/routers';
-import minLogo from '@/assets/images/logo-min.jpg';
-import maxLogo from '@/assets/images/logo.jpg';
+import minLogo from '@/assets/images/logo-min.png';
 import './main.less';
 export default {
     name: 'Main',
@@ -78,7 +80,6 @@ export default {
         return {
             collapsed: false,
             minLogo,
-            maxLogo,
             isFullscreen: false
         };
     },
