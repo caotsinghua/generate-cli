@@ -1,7 +1,8 @@
 import fs from 'fs';
-import path from 'path';
+import path, { dirname } from 'path';
 import { TEMPLATE_TYPE } from './Ui';
 import React from 'react';
+import downloadGitRepo from 'download-git-repo';
 const templatePath = path.resolve(__dirname, '../template');
 
 function copyDir(fromDir: string, toDir: string) {

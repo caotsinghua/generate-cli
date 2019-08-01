@@ -6,6 +6,8 @@ const commander = require('commander');
 const meow = require('meow');
 const generate = require('./generate');
 const path = require('path');
+const { downloadRepo } = require('./util');
+const chalk = require('chalk');
 // const cli = meow(
 //   `
 //     Usage
@@ -32,18 +34,28 @@ const path = require('path');
 // console.log(cli)
 
 commander.version(require('./package.json').version);
+
 commander
   .command('init <project-name>')
-  .description('init project')
-  .option('-w, --write <path>', 'where to overwrite')
-  .action(function(projectName, options) {
+  .description('init <project-name>')
+  .option('-r, --repository <repository>', '从github初始化，包路径为 github用户名/包名')
+  .action(async (projectName, options) => {
     // get todir
-    const cwd = process.cwd();
-    // TODO:优化表现形式
-    console.log('正在生成');
-    generate(path.resolve(cwd, projectName));
-    console.log('生成完成');
+    const target = path.resolve(process.cwd(), projectName);
+    const { repository } = options;
+    console.log(chalk.bgCyan('正在生成...'));
+    if (repository) {
+      try {
+        await downloadRepo(repository, target);
+      } catch (e) {
+        console.log(chalk.red('下载失败', e.message || ''));
+      }
+    } else {
+      generate(target);
+    }
+    console.log(chalk.bgCyan('成功...'));
   });
+
 commander.on('command:*', function() {
   console.error('Invalid command: %s\nSee --help for a list of available commands.', commander.args.join(' '));
   process.exit(1);

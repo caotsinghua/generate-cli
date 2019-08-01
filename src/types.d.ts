@@ -30,3 +30,4 @@ declare module 'ink-spinner' {
 
   export = Spinner;
 }
+declare module 'download-git-repo';

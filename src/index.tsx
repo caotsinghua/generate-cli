@@ -9,5 +9,5 @@ const cli = meow(
 );
 
 render(<Ui />, {
-  exitOnCtrlC: false
+  exitOnCtrlC: true
 });

@@ -21,7 +21,7 @@ function copyDir(fromDir, toDir) {
   }
 }
 
-function generate(to, type = 'admin') {
+function generate(to) {
   switch (type) {
     case 'admin':
       const fromDir = path.resolve(templatePath, 'admin');
