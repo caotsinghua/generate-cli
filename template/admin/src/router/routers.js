@@ -49,6 +49,27 @@ const appRoutes = [
                 component: () => import('@/view/articles/articles-table.vue')
             }
         ]
+    },
+    {
+        path: '/crud',
+        name: 'crud',
+        redirect: '/crud/table',
+        meta: {
+            title: 'crud',
+            icon: 'md-albums'
+        },
+        component: Main,
+        children: [
+            {
+                path: '/crud/table',
+                name: 'crud-table',
+                meta: {
+                    title: 'crud',
+                    icon: 'md-albums'
+                },
+                component: () => import('@/view/crud/crud-table.vue')
+            }
+        ]
     }
 ];
 export default [

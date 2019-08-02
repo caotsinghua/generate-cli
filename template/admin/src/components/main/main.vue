@@ -84,7 +84,6 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(['errorCount']),
         tagNavList() {
             return this.$store.state.app.tagNavList;
         },

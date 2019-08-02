@@ -1,70 +1,3 @@
-<p align="center">
-    <a href="https://www.iviewui.com">
-        <img width="200" src="https://file.iviewui.com/logo-new.svg">
-    </a>
-</p>
-
-<h1>
-iView Admin
-    <h3>Vue.js 2.0 admin management system template based on iView.</h3>
-</h1>
-
-[![](https://img.shields.io/github/release/iview/iview-admin.svg)](https://github.com/iview/iview-admin/releases)
-[![](https://img.shields.io/travis/iview/iview-admin.svg?style=flat-square)](https://travis-ci.org/iview/iview-admin)
-[![vue](https://img.shields.io/badge/vue-2.5.17-brightgreen.svg?style=flat-square)](https://github.com/vuejs/vue)
-[![iview ui](https://img.shields.io/badge/iview-3.2.2-brightgreen.svg?style=flat-square)](https://github.com/iview/iview)
-[![npm](https://img.shields.io/npm/l/express.svg)]()
-
-### 说明
-编写crud管理时，按照如下结构分层
-```
-- api
-  - crudApi.js //接口函数
-- view
-  - crud
-    - components // 组件
-    - store
-      - index.js // 存放本资源组件之间共享的数据
-    - crud-table.vue
-```
-
-在view/articles中为示例，可copy后加以修改。
-
-
-## mine-crud组件
-涉及iview组件：table，page，button，Modal，Form
-
-功能：
-- 表格
-  - [x] 根据columns渲染列表，获取data
-  - [x] 分页（与iview-page一致）
-  - [x] 定义详情显示字段（通过expand）
-  - [x] 多选，批量删除或其他批量操作
-    - :hasBatchDelBtn 只控制多选按钮和删除按钮的显示，具体逻辑自行实现
-    - 自己写@on-selection-change逻辑，
-    - 批量删除按钮需要传入:onBatchDelete,无参数，自己处理多选的数据集
-  - [ ] 导出csv
-
-- 表单
-  - [x] 修改数据，删除数据，添加数据（弹出框）
-  - [o] 自定义弹出框内容（自定义行操作按钮，覆盖原操作）
-  - [ ] 表单上传图片
-  - [ ] 表单分组（template形式难搞，需jsx模式）
-    ```
-    [
-      {
-        group:'基本信息',
-        children:[
-          {
-            label,prop...
-          }
-        ]
-      }
-    ]
-    ```
-
-### 示例
-```
 <template>
     <div>
         <h1>crud</h1>
@@ -223,5 +156,3 @@ export default {
 
 <style>
 </style>
-
-```
