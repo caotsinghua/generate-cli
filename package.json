@@ -1,7 +1,9 @@
 {
   "name": "@tssword/generate-admin",
-  "version": "1.0.3",
-  "description": "",
+  "version": "1.0.4",
+  "keywords": ["cli"],
+  "author": "tssword",
+  "description": "a cli to generate admin project.",
   "engines": {
     "node": ">=10.0.0"
   },
@@ -12,8 +14,6 @@
     "build": "rm -rf dist && tsc",
     "dev": "ts-node  --files src/index.tsx"
   },
-  "keywords": [],
-  "author": "",
   "license": "ISC",
   "dependencies": {
     "cli-spinners": "^2.2.0",
@@ -28,9 +28,9 @@
     "ink-text-input": "^3.2.1",
     "lodash": "^4.17.15",
     "meow": "^5.0.0",
-    "prop-types": "^15.7.2",
     "react": "^16.8.6",
-    "typescript": "^3.5.3"
+    "typescript": "^3.5.3",
+    "metalsmith": "^2.3.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.5",
@@ -42,7 +42,6 @@
     "@types/meow": "^5.0.0",
     "@types/metalsmith": "^2.3.0",
     "@types/node": "^12.6.8",
-    "metalsmith": "^2.3.0",
     "metalsmith-layouts": "^2.3.1",
     "ts-node": "^8.3.0"
   }

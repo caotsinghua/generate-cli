@@ -1,3 +1,9 @@
+### 1.0.4
+
+_19.8.6_
+
+- `chore` 移动 metalsmithd 到 dependencies
+
 ### 1.0.3
 
 _19.8.6_
