@@ -5,8 +5,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
-const Ui_1 = require("./Ui");
-const templatePath = path_1.default.resolve(__dirname, '../template');
+const download_git_repo_1 = __importDefault(require("download-git-repo"));
+const metalsmith_1 = __importDefault(require("metalsmith"));
+const handlebars_1 = __importDefault(require("handlebars"));
+const config_1 = __importDefault(require("./config"));
+const lodash_1 = __importDefault(require("lodash"));
 function copyDir(fromDir, toDir) {
     if (fs_1.default.existsSync(toDir)) {
         const files = fs_1.default.readdirSync(fromDir);
@@ -26,14 +29,63 @@ function copyDir(fromDir, toDir) {
         copyDir(fromDir, toDir);
     }
 }
-function generate(to, type = Ui_1.TEMPLATE_TYPE.IVIEW_ADMIN) {
-    switch (type) {
-        case Ui_1.TEMPLATE_TYPE.IVIEW_ADMIN:
-            const fromDir = path_1.default.resolve(templatePath, 'admin');
-            copyDir(fromDir, to);
-            return true;
-    }
-    return false;
+function generateAdminTemplate(targetDir) {
+    copyDir(config_1.default['admin-template-path'], targetDir);
 }
-exports.generate = generate;
+exports.generateAdminTemplate = generateAdminTemplate;
+function generateAdminTemplateAsync(targetDir) {
+    return new Promise((resolve, reject) => {
+        metalsmith_1.default(__dirname)
+            .source(config_1.default['admin-template-path'])
+            .destination(targetDir)
+            .build(err => {
+            if (err) {
+                reject(err);
+            }
+            else {
+                resolve();
+            }
+        });
+    });
+}
+exports.generateAdminTemplateAsync = generateAdminTemplateAsync;
+exports.generateAdminTemplateFromRepo = (repoName, targetDir) => {
+    return new Promise((resolve, reject) => {
+        download_git_repo_1.default(repoName, targetDir, (err) => {
+            if (err) {
+                reject(err);
+            }
+            resolve();
+        });
+    });
+};
+handlebars_1.default.registerHelper('upperFirst', str => {
+    return lodash_1.default.upperFirst(str);
+});
+exports.generateCrudTemplate = (resourceName, destination) => {
+    return new Promise((resolve, reject) => {
+        metalsmith_1.default(__dirname)
+            .source(config_1.default['crud-template-path'])
+            .ignore([''])
+            .destination(destination)
+            .clean(true)
+            .use(function (files, metalsmith, done) {
+            Object.keys(files).forEach(filePath => {
+                const contents = files[filePath].contents;
+                let contentStr = contents.toString();
+                contentStr = handlebars_1.default.compile(contentStr)({ resourceName });
+                files[filePath].contents = contentStr;
+            });
+            done(undefined, files, metalsmith);
+        })
+            .build(err => {
+            if (err) {
+                reject(err);
+            }
+            else {
+                resolve();
+            }
+        });
+    });
+};
 //# sourceMappingURL=utils.js.map

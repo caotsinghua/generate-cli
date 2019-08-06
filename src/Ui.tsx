@@ -4,24 +4,27 @@ import path from 'path';
 import TextInput from 'ink-text-input';
 import SelectInput, { Item } from 'ink-select-input';
 import Spinner from 'ink-spinner';
-import { generate } from './utils';
+import { generateAdminTemplate } from './utils';
+import config from './config';
 enum VIEW {
   INPUT_TITLE = 'INPUT_TITLE',
   SELECT_TYPE = 'SELECT_TYPE'
 }
+
 export enum TEMPLATE_TYPE {
   IVIEW_ADMIN = 'IVIEW_ADMIN',
-  INK_CLI = 'INK_CLI'
+  CRUD_TEMPLATE = 'CRUD_TEMPLATE'
 }
+
 const selectTypes = [
   {
     label: TEMPLATE_TYPE.IVIEW_ADMIN,
     value: TEMPLATE_TYPE.IVIEW_ADMIN
-  },
-  {
-    label: TEMPLATE_TYPE.INK_CLI,
-    value: TEMPLATE_TYPE.INK_CLI
   }
+  // {
+  //   label: TEMPLATE_TYPE.CRUD_TEMPLATE,
+  //   value: TEMPLATE_TYPE.CRUD_TEMPLATE
+  // }
 ];
 
 const ENTER = '\r';
@@ -47,14 +50,15 @@ const Ui: React.FC<WithStdin<{}>> = ({ stdin, setRawMode }) => {
       stdin.removeListener('data', handleInput);
     };
   });
-  const handleInput = (data: any) => {
+  const handleInput = async (data: any) => {
     const s = String(data);
     if (s === CTRL_C) process.exit(0);
     if (s === ENTER) {
       setStatus('GENERATING');
       try {
-        const success = generate(path.resolve(process.cwd(), title), type);
-        setStatus(success ? 'OK' : 'FAILED');
+        generateAdminTemplate(path.resolve(process.cwd(), title));
+        // await downloadRepo(config['admin-template-repo'], path.resolve(process.cwd(), title)); //太慢
+        setStatus('OK');
       } catch (e) {
         console.log(e);
         setStatus('FAILED');
@@ -106,7 +110,7 @@ const Ui: React.FC<WithStdin<{}>> = ({ stdin, setRawMode }) => {
             <Box marginRight={1}>
               <Color cyan>输入项目名称:</Color>
             </Box>
-            <TextInput value={title} onChange={handleTitleChange} placeholder="输入项目名..."/>
+            <TextInput value={title} onChange={handleTitleChange} placeholder="输入项目名..." />
           </Box>
           <SelectInput items={selectTypes} onHighlight={handleHighlight} />
         </Box>
@@ -115,7 +119,7 @@ const Ui: React.FC<WithStdin<{}>> = ({ stdin, setRawMode }) => {
   };
   return (
     <Box flexDirection="column">
-      <Box>输入项目名并选择项目类型后，按Enter确认.</Box>
+      <Box>输入项目名并选择项目类型后，按Enter确认/CtrlC退出.</Box>
       {renderFunc()}
     </Box>
   );

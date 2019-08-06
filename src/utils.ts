@@ -3,8 +3,18 @@ import path, { dirname } from 'path';
 import { TEMPLATE_TYPE } from './Ui';
 import React from 'react';
 import downloadGitRepo from 'download-git-repo';
-const templatePath = path.resolve(__dirname, '../template');
+import Metalsmith from 'metalsmith';
+import handlebars from 'handlebars';
+import config from './config';
+import _ from 'lodash';
 
+/**
+ *
+ * @param fromDir
+ * @param toDir
+ * 拷贝文件夹
+ * TODO: 用metalsmith代替
+ */
 function copyDir(fromDir: string, toDir: string) {
   if (fs.existsSync(toDir)) {
     const files = fs.readdirSync(fromDir);
@@ -24,12 +34,78 @@ function copyDir(fromDir: string, toDir: string) {
   }
 }
 
-export function generate(to: string, type: TEMPLATE_TYPE | React.Key = TEMPLATE_TYPE.IVIEW_ADMIN) {
-  switch (type) {
-    case TEMPLATE_TYPE.IVIEW_ADMIN:
-      const fromDir = path.resolve(templatePath, 'admin');
-      copyDir(fromDir, to);
-      return true;
-  }
-  return false;
+export function generateAdminTemplate(targetDir: string) {
+  copyDir(config['admin-template-path'], targetDir);
 }
+export function generateAdminTemplateAsync(targetDir: string) {
+  return new Promise((resolve, reject) => {
+    Metalsmith(__dirname)
+      .source(config['admin-template-path'])
+      .destination(targetDir)
+      .build(err => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+  });
+}
+/**
+ *
+ * @param repoName
+ * @param target
+ * 下载git-repo 到指定目录
+ */
+export const generateAdminTemplateFromRepo = (repoName: string, targetDir: string) => {
+  return new Promise((resolve, reject) => {
+    downloadGitRepo(repoName, targetDir, (err: any) => {
+      if (err) {
+        reject(err);
+      }
+      resolve();
+    });
+  });
+};
+
+// 注册helper
+handlebars.registerHelper('upperFirst', str => {
+  return _.upperFirst(str);
+});
+
+/**
+ * 生成crud模板
+ * --resourceName 资源名
+ *
+ * 根据resource修改crud-template中的指定模板，再拷贝到cwd/src/view/{resource}中去
+ */
+/**
+ *
+ * @param resourceName
+ * @param destination
+ */
+export const generateCrudTemplate = (resourceName: string, destination: string) => {
+  return new Promise((resolve, reject) => {
+    Metalsmith(__dirname)
+      .source(config['crud-template-path'])
+      .ignore([''])
+      .destination(destination)
+      .clean(true)
+      .use(function(files, metalsmith, done) {
+        Object.keys(files).forEach(filePath => {
+          const contents: string | Buffer = files[filePath].contents;
+          let contentStr = contents.toString();
+          contentStr = handlebars.compile(contentStr)({ resourceName });
+          files[filePath].contents = contentStr;
+        });
+        done(undefined, files, metalsmith);
+      })
+      .build(err => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+  });
+};

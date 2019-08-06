@@ -1,3 +1,11 @@
+### 1.0.3
+
+_19.8.6_
+
+- `取消` generate-admin 命令
+- `新增` generate init 命令，从 github 下载模板功能
+- `新增` generate crud 命令，生成 crud 模板到 view 中
+
 ### 1.0.2
 
 _19.8.1_

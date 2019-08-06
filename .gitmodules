@@ -1,0 +1,3 @@
+[submodule "admin-template"]
+	path = admin-template
+	url = https://github.com/caotsinghua/iview-admin-template.git

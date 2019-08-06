@@ -1,4 +1,12 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
@@ -25,16 +33,12 @@ var VIEW;
 var TEMPLATE_TYPE;
 (function (TEMPLATE_TYPE) {
     TEMPLATE_TYPE["IVIEW_ADMIN"] = "IVIEW_ADMIN";
-    TEMPLATE_TYPE["INK_CLI"] = "INK_CLI";
+    TEMPLATE_TYPE["CRUD_TEMPLATE"] = "CRUD_TEMPLATE";
 })(TEMPLATE_TYPE = exports.TEMPLATE_TYPE || (exports.TEMPLATE_TYPE = {}));
 const selectTypes = [
     {
         label: TEMPLATE_TYPE.IVIEW_ADMIN,
         value: TEMPLATE_TYPE.IVIEW_ADMIN
-    },
-    {
-        label: TEMPLATE_TYPE.INK_CLI,
-        value: TEMPLATE_TYPE.INK_CLI
     }
 ];
 const ENTER = '\r';
@@ -53,15 +57,15 @@ const Ui = ({ stdin, setRawMode }) => {
             stdin.removeListener('data', handleInput);
         };
     });
-    const handleInput = (data) => {
+    const handleInput = (data) => __awaiter(this, void 0, void 0, function* () {
         const s = String(data);
         if (s === CTRL_C)
             process.exit(0);
         if (s === ENTER) {
             setStatus('GENERATING');
             try {
-                const success = utils_1.generate(path_1.default.resolve(process.cwd(), title), type);
-                setStatus(success ? 'OK' : 'FAILED');
+                utils_1.generateAdminTemplate(path_1.default.resolve(process.cwd(), title));
+                setStatus('OK');
             }
             catch (e) {
                 console.log(e);
@@ -71,7 +75,7 @@ const Ui = ({ stdin, setRawMode }) => {
                 process.exit(0);
             }
         }
-    };
+    });
     const handleTitleChange = (value) => {
         setTitle(value);
     };
@@ -106,7 +110,7 @@ const Ui = ({ stdin, setRawMode }) => {
         }
     };
     return (react_1.default.createElement(ink_1.Box, { flexDirection: "column" },
-        react_1.default.createElement(ink_1.Box, null, "\u8F93\u5165\u9879\u76EE\u540D\u5E76\u9009\u62E9\u9879\u76EE\u7C7B\u578B\u540E\uFF0C\u6309Enter\u786E\u8BA4."),
+        react_1.default.createElement(ink_1.Box, null, "\u8F93\u5165\u9879\u76EE\u540D\u5E76\u9009\u62E9\u9879\u76EE\u7C7B\u578B\u540E\uFF0C\u6309Enter\u786E\u8BA4/CtrlC\u9000\u51FA."),
         renderFunc()));
 };
 const UiWithStdin = props => {
