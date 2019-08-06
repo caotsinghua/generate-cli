@@ -1,7 +1,9 @@
 {
   "name": "@tssword/generate-admin",
-  "version": "1.0.6",
-  "keywords": ["cli"],
+  "version": "1.0.7",
+  "keywords": [
+    "cli"
+  ],
   "author": "tssword",
   "description": "a cli to generate admin project.",
   "engines": {

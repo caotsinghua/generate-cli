@@ -17,7 +17,6 @@
         "experimentalDecorators": true,
         "esModuleInterop": true,
         "jsx": "react",
-
     },
     "include": [
         "src/**/*"
