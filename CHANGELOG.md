@@ -1,6 +1,9 @@
-### 1.0.7
+### 1.0.8
 _19.8.8_
 - `template更新` 后台模板更新
+### 1.0.7
+_19.8.6_
+- `增加` init 不写--repo则默认caotsinghua/iview-admin-template
 ### 1.0.6
 _19.8.6_
 - `template更新` 后台管理模板更新
