@@ -30,3 +30,10 @@
       注意必须在admin项目根目录下运行此命令 ps:资源不要复数
       generate init --repo vuejs/vue --path ./demo 把vue仓库内容拷贝到demo中
 ```
+转换swagger-docs为
+method
+url
+?params
+?data
+?description
+headers

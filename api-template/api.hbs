@@ -1,0 +1,12 @@
+import axios from './axios';
+
+{{#each apis}}
+export const {{method}}{{parseApiName path}}=(data)=>{
+    return axios.request({
+        url:`{{parseUrl path pathParams}}`,
+        method:'{{method}}',
+        params:{},
+        data:{}
+    })
+}
+{{/each}}
