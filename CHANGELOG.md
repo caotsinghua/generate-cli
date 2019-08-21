@@ -1,3 +1,10 @@
+### 1.0.10
+_19.8.21_
+- `crud` 可以指定插入的目录
+- `crud` 简化页面中store名称
+- `crud` 添加使用vuex的store的curd模板
+- `crud` api引入路径@/api/{resourceName}
+
 ### 1.0.8
 _19.8.8_
 - `template更新` 后台模板更新

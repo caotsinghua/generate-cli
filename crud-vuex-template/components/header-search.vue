@@ -4,12 +4,12 @@
             <Row :gutter="15">
                 <Col :span="7">
                     <FormItem label="标题" style="margin-bottom:0">
-                        <Input :value="storeState.queryName" />
+                        <Input v-model="queryName" />
                     </FormItem>
                 </Col>
                 <Col :span="7">
                     <FormItem label="类型" style="margin-bottom:0">
-                        <Input :value="storeState.queryType" />
+                        <Input v-model="queryType" />
                     </FormItem>
                 </Col>
                 <Col :span="7">
@@ -22,21 +22,20 @@
 </template>
 
 <script>
-import store from '../store';
+import {mapState,mapActions} from 'vuex';
 export default {
-    data() {
-        return {
-            storeState: store.state
-        };
+    computed: {
+        ...mapState('{{resourceName}}',['queryName','queryType'])
     },
     methods: {
+        ...mapActions('{{resourceName}}',['getData']),
         handleSearch() {
-            store.getData({});
+            store.getData();
         },
         handleReset() {
-            this.storeState.queryName = '';
-            this.storeState.queryType = '';
-            store.getData({});
+            this.queryName = ''; // todo:
+            this.queryType = ''; // todo 清空
+            store.getData();
         }
     }
 };

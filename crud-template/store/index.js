@@ -1,4 +1,4 @@
-import { get{{upperFirst resourceName}}s } from '../../../api/data';
+import { get{{upperFirst resourceName}}s } from '@/api/{{resourceName}}';
 
 export default {
     debug: true,

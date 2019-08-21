@@ -13,9 +13,9 @@
     <main>
       <Table
         border
-        :data="storeState.data"
+        :data="data"
         :columns="columns"
-        :loading="storeState.loading"
+        :loading="loading"
         :max-height="540"
         @on-selection-change="handleSelectionChange"
       >
@@ -29,9 +29,9 @@
       <Row type="flex" justify="end" style="margin-top:15px">
         <Col>
           <Page
-            :current="storeState.page"
-            :total="storeState.total"
-            :page-size="storeState.pageSize"
+            :current="page"
+            :total="total"
+            :page-size="pageSize"
             show-sizer
             show-total
             @on-change="handlePageChange"
@@ -47,7 +47,7 @@
 import HeaderSearch from './components/header-search';
 import TableExpandRow from './components/table-expand-row';
 import EditModal from './components/edit-modal';
-import store from './store';
+import {mapState,mapActions} from 'vuex';
 export default {
     name: '{{resourceName}}-table',
     components: {
@@ -55,9 +55,11 @@ export default {
         TableExpandRow,
         EditModal
     },
+    computed: {
+        ...mapState('{{resourceName}}',['data','page','pageSize','total','loading'])
+    },
     data() {
         return {
-            storeState: store.state,
             columns: [
                 {
                     type: 'expand',
@@ -129,8 +131,9 @@ export default {
         this.initData();
     },
     methods: {
+        ...mapActions('{{resourceName}}',['getData','setQueryName','setQueryType']),
         initData() {
-            store.getData({});
+            this.getData();
         },
         handleEditRow(row) {
             this.$refs['edit-modal'].openModal(row.id);
@@ -164,8 +167,12 @@ export default {
             });
         },
         handleExportExcel() {},
-        handlePageChange(page) {},
-        handlePageSizeChange(pageSize) {}
+        handlePageChange(page) {
+            this.getData({page});
+        },
+        handlePageSizeChange(pageSize) {
+            this.getData({pageSize})
+        }
     }
 };
 

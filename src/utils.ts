@@ -84,13 +84,13 @@ handlebars.registerHelper('upperFirst', str => {
  * @param resourceName
  * @param destination
  */
-export const generateCrudTemplate = (resourceName: string, destination: string) => {
+export const generateCrudTemplate = (resourceName: string, destination: string): Promise<void> => {
   return new Promise((resolve, reject) => {
     Metalsmith(__dirname)
       .source(config['crud-template-path'])
       .ignore([''])
       .destination(destination)
-      .clean(true)
+      .clean(false)
       .use(function(files, metalsmith, done) {
         Object.keys(files).forEach(filePath => {
           const contents: string | Buffer = files[filePath].contents;
@@ -105,6 +105,58 @@ export const generateCrudTemplate = (resourceName: string, destination: string) 
           reject(err);
         } else {
           resolve();
+        }
+      });
+  });
+};
+
+export const generateCrudVuexTemplate = (
+  resourceName: string,
+  destination: string,
+  storePath: string
+): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    Metalsmith(__dirname)
+      .source(config['crud-vuex-template-path'])
+      .ignore(['store'])
+      .destination(destination)
+      .clean(false)
+      .use(function(files, metalsmith, done) {
+        Object.keys(files).forEach(filePath => {
+          const contents: string | Buffer = files[filePath].contents;
+          let contentStr = contents.toString();
+          contentStr = handlebars.compile(contentStr)({ resourceName });
+          files[filePath].contents = contentStr;
+        });
+        done(undefined, files, metalsmith);
+      })
+      .build(err => {
+        if (err) {
+          reject(err);
+        } else {
+          console.log(storePath)
+          Metalsmith(__dirname)
+            .source(path.join(config['crud-vuex-template-path'], 'store'))
+            .destination(storePath)
+            .clean(false)
+            .use(function(files, metalsmith, done) {
+              Object.keys(files).forEach(filePath => {
+                const contents: string | Buffer = files[filePath].contents;
+                let contentStr = contents.toString();
+                contentStr = handlebars.compile(contentStr)({ resourceName });
+                files[filePath].contents = contentStr;
+                files[`${resourceName}.js`] = files[filePath];
+                delete files[filePath];
+              });
+              done(undefined, files, metalsmith);
+            })
+            .build(err => {
+              if (err) {
+                reject(err);
+              } else {
+                resolve();
+              }
+            });
         }
       });
   });
