@@ -10,6 +10,7 @@
       $ generate
       $ generate admin --project-name <projectName>
       $ generate crud --resource <resourceName>
+      $ generate crud-vuex --resource <resourceName> --store-path <store-path>
       $ generate init --repo <githubUserName/repoName> --path <path>
 
     Options
@@ -26,14 +27,8 @@
       generate 打开图形界面操作
       generate admin --project-name demo 创建demo的后台项目
       generate admin --project-name ../demo 在上级目录创建后台项目
-      generate crud --resource article  创建资源article的增删改查模板 =>./src/view/articles，
-      注意必须在admin项目根目录下运行此命令 ps:资源不要复数
+      generate crud --resource article --path ./src/view  创建资源article的增删改查模板 =>./src/view/articles，
+      ps:资源不要复数,默认path为src/view,可以指定path插入模板
+      generate crud-vuex --resource article --path ./src/view --store-path src/store/modules
       generate init --repo vuejs/vue --path ./demo 把vue仓库内容拷贝到demo中
 ```
-转换swagger-docs为
-method
-url
-?params
-?data
-?description
-headers
