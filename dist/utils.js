@@ -68,7 +68,7 @@ exports.generateCrudTemplate = (resourceName, destination) => {
             .source(config_1.default['crud-template-path'])
             .ignore([''])
             .destination(destination)
-            .clean(true)
+            .clean(false)
             .use(function (files, metalsmith, done) {
             Object.keys(files).forEach(filePath => {
                 const contents = files[filePath].contents;
@@ -84,6 +84,55 @@ exports.generateCrudTemplate = (resourceName, destination) => {
             }
             else {
                 resolve();
+            }
+        });
+    });
+};
+exports.generateCrudVuexTemplate = (resourceName, destination, storePath) => {
+    return new Promise((resolve, reject) => {
+        metalsmith_1.default(__dirname)
+            .source(config_1.default['crud-vuex-template-path'])
+            .ignore(['store'])
+            .destination(destination)
+            .clean(false)
+            .use(function (files, metalsmith, done) {
+            Object.keys(files).forEach(filePath => {
+                const contents = files[filePath].contents;
+                let contentStr = contents.toString();
+                contentStr = handlebars_1.default.compile(contentStr)({ resourceName });
+                files[filePath].contents = contentStr;
+            });
+            done(undefined, files, metalsmith);
+        })
+            .build(err => {
+            if (err) {
+                reject(err);
+            }
+            else {
+                console.log(storePath);
+                metalsmith_1.default(__dirname)
+                    .source(path_1.default.join(config_1.default['crud-vuex-template-path'], 'store'))
+                    .destination(storePath)
+                    .clean(false)
+                    .use(function (files, metalsmith, done) {
+                    Object.keys(files).forEach(filePath => {
+                        const contents = files[filePath].contents;
+                        let contentStr = contents.toString();
+                        contentStr = handlebars_1.default.compile(contentStr)({ resourceName });
+                        files[filePath].contents = contentStr;
+                        files[`${resourceName}.js`] = files[filePath];
+                        delete files[filePath];
+                    });
+                    done(undefined, files, metalsmith);
+                })
+                    .build(err => {
+                    if (err) {
+                        reject(err);
+                    }
+                    else {
+                        resolve();
+                    }
+                });
             }
         });
     });
