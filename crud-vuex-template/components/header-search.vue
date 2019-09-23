@@ -1,15 +1,10 @@
 <template>
     <div class="{{resourceName}}-header-search">
-        <Form :label-width="50" label-position="left">
+        <Form :label-width="50" label-position="left" @submit.prevent.stop>
             <Row :gutter="15">
                 <Col :span="7">
                     <FormItem label="标题" style="margin-bottom:0">
-                        <Input v-model="queryName" />
-                    </FormItem>
-                </Col>
-                <Col :span="7">
-                    <FormItem label="类型" style="margin-bottom:0">
-                        <Input v-model="queryType" />
+                        <Input v-model="queryInfo.keyword" />
                     </FormItem>
                 </Col>
                 <Col :span="7">
@@ -24,18 +19,22 @@
 <script>
 import {mapState,mapActions} from 'vuex';
 export default {
-    computed: {
-        ...mapState('{{resourceName}}',['queryName','queryType'])
+    data(){
+        return {
+            queryInfo:{
+                keyword:''
+            }
+        }
     },
     methods: {
-        ...mapActions('{{resourceName}}',['getData']),
+        ...mapActions('{{resourceName}}',['getData','setQueryInfo']),
         handleSearch() {
-            store.getData();
+            this.setQueryInfo(this.queryInfo)
+            this.getData({page:1});
         },
         handleReset() {
-            this.queryName = ''; // todo:
-            this.queryType = ''; // todo 清空
-            store.getData();
+            this.setQueryInfo({})
+            this.getData({page:1,pageSize:10});
         }
     }
 };

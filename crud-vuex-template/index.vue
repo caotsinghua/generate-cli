@@ -8,7 +8,6 @@
       <Button type="error" icon="md-trash" @click="handleBatchDelete" :disabled="selected.length === 0"
         >批量删除</Button
       >
-      <Button type="primary" icon="md-out" @click="handleExportExcel">导出excel</Button>
     </div>
     <main>
       <Table
@@ -21,8 +20,9 @@
       >
         <template slot="actions" slot-scope="{ row }">
           <div class="row-actions">
-            <Button type="primary" @click="handleEditRow(row)">编辑</Button>
-            <Button type="error" @click="handleDeleteRow(row)">删除</Button>
+            <Button size="small" type="primary" @click="handleShowRow(row)">查看</Button>
+            <Button size="small" type="primary" @click="handleEditRow(row)">编辑</Button>
+            <Button size="small" type="error" @click="handleDeleteRow(row)">删除</Button>
           </div>
         </template>
       </Table>
@@ -47,152 +47,133 @@
 import HeaderSearch from './components/header-search';
 import TableExpandRow from './components/table-expand-row';
 import EditModal from './components/edit-modal';
-import {mapState,mapActions} from 'vuex';
+import { mapState, mapActions } from 'vuex';
 export default {
-    name: '{{resourceName}}-table',
-    components: {
-        HeaderSearch,
-        TableExpandRow,
-        EditModal
-    },
-    computed: {
-        ...mapState('{{resourceName}}',['data','page','pageSize','total','loading'])
-    },
-    data() {
-        return {
-            columns: [
-                {
-                    type: 'expand',
-                    width: 50,
-                    render: (h, { row }) =>
-                        h(TableExpandRow, {
-                            props: { row }
-                        })
-                },
-                {
-                    type: 'selection',
-                    width: 60,
-                    align: 'center'
-                },
-                {
-                    title: '#',
-                    type: 'index',
-                    align: 'center',
-                    width: 70
-                },
-                {
-                    title: 'id',
-                    key: 'id',
-                    align: 'center',
-                    width: 70
-                },
-                {
-                    title: '标题',
-                    key: 'title',
-                    align: 'center',
-                    maxWidth: 500,
-                    minWidth: 200
-                },
-                {
-                    title: '作者',
-                    key: 'author',
-                    align: 'center'
-                },
-                {
-                    title: '阅读量',
-                    key: 'readed',
-                    align: 'center'
-                },
-                {
-                    title: '发布时间',
-                    key: 'publishTime',
-                    align: 'center',
-                    ellipsis: true,
-                    tooltip: true
-                },
-                {
-                    title: '更新时间',
-                    key: 'updateTime',
-                    align: 'center',
-                    ellipsis: true,
-                    tooltip: true
-                },
-                {
-                    title: '操作',
-                    slot: 'actions',
-                    align: 'center',
-                    minWidth: 80
-                }
-            ],
-            selected: ''
-        };
-    },
-    mounted() {
-        this.initData();
-    },
-    methods: {
-        ...mapActions('{{resourceName}}',['getData','setQueryName','setQueryType']),
-        initData() {
-            this.getData();
+  name: '{{resourceName}}-table',
+  components: {
+    HeaderSearch,
+    TableExpandRow,
+    EditModal
+  },
+  computed: {
+    ...mapState('{{resourceName}}s', ['data', 'page', 'pageSize', 'total', 'loading'])
+  },
+  data() {
+    return {
+      columns: [
+        // {
+        //   type: 'expand',
+        //   width: 50,
+        //   render: (h, { row }) =>
+        //     h(TableExpandRow, {
+        //       props: { row }
+        //     })
+        // },
+        {
+          type: 'selection',
+          width: 60,
+          align: 'center'
         },
-        handleEditRow(row) {
-            this.$refs['edit-modal'].openModal(row.id);
+        {
+          title: '#',
+          type: 'index',
+          align: 'center',
+          width: 70
         },
-        handleAddRow() {
-            this.$refs['edit-modal'].openModal();
+        {
+          title: 'id',
+          key: 'id',
+          align: 'center',
+          width: 70
         },
-        handleDeleteRow(row) {
-            this.$Modal.confirm({
-                title: '警告',
-                content: '确实要删除此行吗？',
-                onOk: () => {
-                    this.$Message.success('删除成功');
-                }
-            });
+        {
+          title: '标题',
+          key: 'title',
+          align: 'center',
+          maxWidth: 500,
+          minWidth: 200
         },
-        handleSelectionChange(selection) {
-            if (selection.length === 0) {
-                this.selected = '';
-                return;
-            }
-            this.selected = selection.map(item => item.id).join(',');
+        {
+          title: '作者',
+          key: 'author',
+          align: 'center'
         },
-        handleBatchDelete() {
-            this.$Modal.confirm({
-                title: '警告',
-                content: '确实要删除此行吗？',
-                onOk: () => {
-                    this.$Message.success('删除成功');
-                }
-            });
-        },
-        handleExportExcel() {},
-        handlePageChange(page) {
-            this.getData({page});
-        },
-        handlePageSizeChange(pageSize) {
-            this.getData({pageSize})
+        {
+          title: '操作',
+          slot: 'actions',
+          align: 'center',
+          minWidth: 80
         }
+      ],
+      selected: ''
+    };
+  },
+  mounted() {
+    this.initData();
+  },
+  methods: {
+    ...mapActions('{{resourceName}}s', ['getData', 'setQueryInfo']),
+    initData() {
+      this.getData();
+    },
+    handleEditRow(row) {
+      this.$refs['edit-modal'].show(row);
+    },
+    handleAddRow() {
+      this.$refs['edit-modal'].show();
+    },
+    handleShowRow(row) {
+      this.$refs['edit-modal'].show(row, true);
+    },
+    handleDeleteRow(row) {
+      this.$Modal.confirm({
+        title: '警告',
+        content: '确实要删除此行吗？',
+        onOk: () => {
+          this.$Message.success('删除成功');
+        }
+      });
+    },
+    handleSelectionChange(selection) {
+      if (selection.length === 0) {
+        this.selected = '';
+        return;
+      }
+      this.selected = selection.map(item => item.id).join(',');
+    },
+    handleBatchDelete() {
+      this.$Modal.confirm({
+        title: '警告',
+        content: '确实要删除此行吗？',
+        onOk: () => {
+          this.$Message.success('删除成功');
+        }
+      });
+    },
+    handlePageChange(page) {
+      if (page === this.page) return;
+      store.getData({ page });
+    },
+    handlePageSizeChange(pageSize) {
+      store.getData({ page: 1, pageSize });
     }
+  }
 };
-
 </script>
 
 <style lang="less" scoped>
-.{{resourceName}}-table {
-}
 .header-search-wrap {
-    margin: 10px 0 20px;
+  margin: 10px 0 20px;
 }
 .header-actions {
-    margin: 15px 0;
-    button {
-        margin-right: 10px;
-    }
+  margin: 15px 0;
+  button {
+    margin-right: 10px;
+  }
 }
 .row-actions {
-    button {
-        margin-right: 10px;
-    }
+  button {
+    margin-right: 10px;
+  }
 }
 </style>

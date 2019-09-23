@@ -3,17 +3,12 @@
         <Form :label-width="50" label-position="left">
             <Row :gutter="15">
                 <Col :span="7">
-                    <FormItem label="标题" style="margin-bottom:0">
-                        <Input :value="storeState.queryName" />
+                    <FormItem label="关键词" style="margin-bottom:0">
+                        <Input :value="storeState.keyword" />
                     </FormItem>
                 </Col>
                 <Col :span="7">
-                    <FormItem label="类型" style="margin-bottom:0">
-                        <Input :value="storeState.queryType" />
-                    </FormItem>
-                </Col>
-                <Col :span="7">
-                    <Button type="primary" @click="handleSearch" style="margin-right:10px">搜索</Button>
+                    <Button type="primary" @click="handleSearch" style="margin-right:10px">查询</Button>
                     <Button @click="handleReset">清空</Button>
                 </Col>
             </Row>
@@ -31,12 +26,11 @@ export default {
     },
     methods: {
         handleSearch() {
-            store.getData({});
+            store.getData({page:1});
         },
         handleReset() {
-            this.storeState.queryName = '';
-            this.storeState.queryType = '';
-            store.getData({});
+            store.setQueryInfo({})
+            this.handleSearch()
         }
     }
 };

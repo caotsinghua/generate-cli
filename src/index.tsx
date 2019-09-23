@@ -6,7 +6,6 @@ import chalk from 'chalk';
 import path from 'path';
 import Ui from './Ui';
 import {
-  generateAdminTemplate,
   generateCrudTemplate,
   generateAdminTemplateAsync,
   generateAdminTemplateFromRepo,

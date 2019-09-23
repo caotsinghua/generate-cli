@@ -1,25 +1,44 @@
+### 1.0.12
+
+_19.9.23_
+
+- `template` admin 模板更新
+- `crud` 简化增删改查列表，表单数据，只保留一两个字段，减少删除量
+- `crud` 直接声明 getResources 等接口，防止未定义接口时导入失败。接口后续自己修改
+
 ### 1.0.10
+
 _19.8.21_
+
 - `crud` 可以指定插入的目录
-- `crud` 简化页面中store名称
-- `crud` 添加使用vuex的store的curd模板
-- `crud` api引入路径@/api/{resourceName}
+- `crud` 简化页面中 store 名称
+- `crud` 添加使用 vuex 的 store 的 curd 模板
+- `crud` api 引入路径@/api/{resourceName}
 
 ### 1.0.8
+
 _19.8.8_
+
 - `template更新` 后台模板更新
+
 ### 1.0.7
+
 _19.8.6_
-- `增加` init 不写--repo则默认caotsinghua/iview-admin-template
+
+- `增加` init 不写--repo 则默认 caotsinghua/iview-admin-template
+
 ### 1.0.6
+
 _19.8.6_
+
 - `template更新` 后台管理模板更新
+
 ### 1.0.5
 
 _19.8.6_
 
 - `template更新` 后台管理模板更新
-- `template更新` crud-template更新
+- `template更新` crud-template 更新
 
 ### 1.0.4
 

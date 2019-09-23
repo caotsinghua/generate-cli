@@ -1,7 +1,21 @@
-import { get{{upperFirst resourceName}}s } from '@/api/{{resourceName}}';
+const get{{upperFirst resourceName}}s=()=>{
+    return {
+        data: {
+            data: {
+                list: [
+                    {
+                        id: 1,
+                        title: 'aa',
+                        author: 'james'
+                    }
+                ],
+                totalCount: 1
+            }
+        }
+    }
+}
 
 export default {
-    debug: true,
     state: {
         data: [],
         page: 1,
@@ -9,32 +23,40 @@ export default {
         total: 0,
         loading: false,
         // queryInfo
-        queryName: '',
-        queryType: ''
+        queryInfo:{
+            keyword:''
+        }
     },
     // actions
-    async getData({ page = 1, pageSize = 10, queryName = '', queryType = '' }) {
-        let res = null;
+    async getData(query={}) {
+        const page=query.page||this.state.page;
+        const pageSize=query.pageSize||this.state.pageSize;
+        this.state.page=page;
+        this.state.pageSize=pageSize;
         try {
             this.state.loading = true;
-            res = await get{{upperFirst resourceName}}s({ page, pageSize, queryName, queryType });
-
-            const {
-                data: { data }
-            } = res;
-            this.state.data = data;
-            this.state.total = data.length;
+            // TODO:change
+            const { data } = await get{{upperFirst resourceName}}s(query);
+            this.state.data = data.data.list;
+            this.state.total = data.data.totalCount;
         } catch (e) {
             throw e;
         } finally {
             this.state.loading = false;
         }
-        return res;
     },
-    setQueryName(value) {
-        this.state.queryName = value;
+    setQueryInfo(query){
+        this.state.queryInfo=query;
     },
-    setQueryType(value) {
-        this.state.queryType = value;
+    clear(){
+        Object.assign(this.state,{
+            data: [],
+            page: 1,
+            pageSize: 10,
+            total: 0,
+            loading: false,
+            // queryInfo
+            queryInfo:{}
+        })
     }
 };

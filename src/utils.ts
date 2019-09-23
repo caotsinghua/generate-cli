@@ -1,7 +1,5 @@
 import fs from 'fs';
-import path, { dirname } from 'path';
-import { TEMPLATE_TYPE } from './Ui';
-import React from 'react';
+import path from 'path';
 import downloadGitRepo from 'download-git-repo';
 import Metalsmith from 'metalsmith';
 import handlebars from 'handlebars';
@@ -134,7 +132,7 @@ export const generateCrudVuexTemplate = (
         if (err) {
           reject(err);
         } else {
-          console.log(storePath)
+          console.log(storePath);
           Metalsmith(__dirname)
             .source(path.join(config['crud-vuex-template-path'], 'store'))
             .destination(storePath)
@@ -145,7 +143,7 @@ export const generateCrudVuexTemplate = (
                 let contentStr = contents.toString();
                 contentStr = handlebars.compile(contentStr)({ resourceName });
                 files[filePath].contents = contentStr;
-                files[`${resourceName}.js`] = files[filePath];
+                files[`${resourceName}s.js`] = files[filePath];
                 delete files[filePath];
               });
               done(undefined, files, metalsmith);
