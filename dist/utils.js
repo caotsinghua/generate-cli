@@ -120,7 +120,7 @@ exports.generateCrudVuexTemplate = (resourceName, destination, storePath) => {
                         let contentStr = contents.toString();
                         contentStr = handlebars_1.default.compile(contentStr)({ resourceName });
                         files[filePath].contents = contentStr;
-                        files[`${resourceName}.js`] = files[filePath];
+                        files[`${resourceName}s.js`] = files[filePath];
                         delete files[filePath];
                     });
                     done(undefined, files, metalsmith);
