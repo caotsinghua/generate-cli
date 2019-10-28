@@ -4,7 +4,7 @@
             <Row :gutter="15">
                 <Col :span="7">
                     <FormItem label="标题" style="margin-bottom:0">
-                        <Input v-model="queryInfo.keyword" />
+                        <Input v-model.trim="queryInfo.keyword" />
                     </FormItem>
                 </Col>
                 <Col :span="7">

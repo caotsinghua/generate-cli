@@ -1,6 +1,6 @@
 <template>
   <Modal v-model="visible" :title="`${this.row ? '更新' : '创建'}表单`" width="700" @on-cancel="hide">
-    <Form ref="form" :model="form" :label-width="100" :rules="rules">
+    <Form ref="form" :model="form" :label-width="100" :rules="rules" label-position="left">
       <Row class-name="form-row" :gutter="15">
         <Col :xs="24" :sm="24" :md="12">
           <FormItem label="title" prop="title">

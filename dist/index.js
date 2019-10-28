@@ -24,7 +24,6 @@ const cli = meow_1.default(`
     🌈 generate 🌈
     Usage
       $ generate
-      $ generate admin --project-name <projectName>
       $ generate crud --resource <resourceName>
       $ generate crud-vuex --resource <resourceName> --store-path <store-path>
       $ generate init --repo <githubUserName/repoName> --path <path>
@@ -41,12 +40,11 @@ const cli = meow_1.default(`
     Examples
 
       generate 打开图形界面操作
-      generate admin --project-name demo 创建demo的后台项目
-      generate admin --project-name ../demo 在上级目录创建后台项目
       generate crud --resource article --path ./src/view  创建资源article的增删改查模板 =>./src/view/articles，
       ps:资源不要复数,默认path为src/view,可以指定path插入模板
       generate crud-vuex --resource article --path ./src/view --store-path src/store/modules
-      generate init --repo vuejs/vue --path ./demo 把vue仓库内容拷贝到demo中`, {
+      generate init --repo vuejs/vue --path ./demo 把vue仓库内容拷贝到./demo中
+      generate init --path ./demo 把vue仓库内容拷贝到./demo中`, {
     flags: {
         'project-name': {
             type: 'string',
@@ -69,7 +67,6 @@ const cli = meow_1.default(`
 });
 var Action;
 (function (Action) {
-    Action["INIT_ADMIN_TEMPLATE"] = "admin";
     Action["INSERT_CRUD_TEMPLATE"] = "crud";
     Action["INSERT_CRUD_VUEX_TEMPLATE"] = "crud-vuex";
     Action["INIT_FROM_REPO"] = "init";
@@ -77,30 +74,13 @@ var Action;
 const main = () => __awaiter(this, void 0, void 0, function* () {
     const { input: [action], flags } = cli;
     switch (action) {
-        case "admin": {
-            if (flags['projectName']) {
-                const targetDirection = path_1.default.resolve(process.cwd(), flags['projectName']);
-                log(chalk_1.default.white('正在生成'));
-                try {
-                    yield utils_1.generateAdminTemplateAsync(targetDirection);
-                    log(chalk_1.default.green('生成成功'));
-                }
-                catch (e) {
-                    log(chalk_1.default.red(e.message || '生成出错'));
-                }
-            }
-            else {
-                log(chalk_1.default.bgRed('没有指定--project-name'));
-            }
-            break;
-        }
         case "crud": {
             if (!flags['resource']) {
                 log(chalk_1.default.bgRed('没有指定--resource'));
                 return;
             }
             const resource = flags['resource'];
-            let targetDirection = path_1.default.resolve(process.cwd(), flags['path'] || 'src/view', `${resource}s`);
+            let targetDirection = path_1.default.resolve(process.cwd(), flags['path'] || 'src/view', resource);
             log(chalk_1.default.white('正在生成'));
             try {
                 yield utils_1.generateCrudTemplate(resource, targetDirection);

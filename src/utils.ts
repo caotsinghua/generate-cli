@@ -68,7 +68,7 @@ export const generateAdminTemplateFromRepo = (repoName: string, targetDir: strin
 
 // 注册helper
 handlebars.registerHelper('upperFirst', str => {
-  return _.upperFirst(str);
+  return _.upperFirst(_.camelCase(str));
 });
 
 /**
@@ -93,7 +93,7 @@ export const generateCrudTemplate = (resourceName: string, destination: string):
         Object.keys(files).forEach(filePath => {
           const contents: string | Buffer = files[filePath].contents;
           let contentStr = contents.toString();
-          contentStr = handlebars.compile(contentStr)({ resourceName });
+          contentStr = handlebars.compile(contentStr)({ resourceName }); // 编译模板
           files[filePath].contents = contentStr;
         });
         done(undefined, files, metalsmith);

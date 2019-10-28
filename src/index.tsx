@@ -17,7 +17,6 @@ const cli = meow(
     🌈 generate 🌈
     Usage
       $ generate
-      $ generate admin --project-name <projectName>
       $ generate crud --resource <resourceName>
       $ generate crud-vuex --resource <resourceName> --store-path <store-path>
       $ generate init --repo <githubUserName/repoName> --path <path>
@@ -34,12 +33,11 @@ const cli = meow(
     Examples
 
       generate 打开图形界面操作
-      generate admin --project-name demo 创建demo的后台项目
-      generate admin --project-name ../demo 在上级目录创建后台项目
       generate crud --resource article --path ./src/view  创建资源article的增删改查模板 =>./src/view/articles，
       ps:资源不要复数,默认path为src/view,可以指定path插入模板
       generate crud-vuex --resource article --path ./src/view --store-path src/store/modules
-      generate init --repo vuejs/vue --path ./demo 把vue仓库内容拷贝到demo中`,
+      generate init --repo vuejs/vue --path ./demo 把vue仓库内容拷贝到./demo中
+      generate init --path ./demo 把vue仓库内容拷贝到./demo中`,
   {
     flags: {
       'project-name': {
@@ -63,7 +61,6 @@ const cli = meow(
   }
 );
 const enum Action {
-  INIT_ADMIN_TEMPLATE = 'admin',
   INSERT_CRUD_TEMPLATE = 'crud',
   INSERT_CRUD_VUEX_TEMPLATE = 'crud-vuex',
   INIT_FROM_REPO = 'init'
@@ -76,29 +73,14 @@ const main = async () => {
   } = cli;
 
   switch (action) {
-    case Action.INIT_ADMIN_TEMPLATE: {
-      if (flags['projectName']) {
-        const targetDirection = path.resolve(process.cwd(), flags['projectName']);
-        log(chalk.white('正在生成'));
-        try {
-          await generateAdminTemplateAsync(targetDirection);
-          log(chalk.green('生成成功'));
-        } catch (e) {
-          log(chalk.red(e.message || '生成出错'));
-        }
-      } else {
-        log(chalk.bgRed('没有指定--project-name'));
-      }
-      break;
-    }
     case Action.INSERT_CRUD_TEMPLATE: {
       if (!flags['resource']) {
         log(chalk.bgRed('没有指定--resource'));
         return;
       }
       const resource = flags['resource'];
-      // feature:设置crud模板插入的目录
-      let targetDirection = path.resolve(process.cwd(), flags['path'] || 'src/view', `${resource}s`);
+      // 设置crud模板插入的目录
+      let targetDirection = path.resolve(process.cwd(), flags['path'] || 'src/view', resource); // 取消resource+s
       log(chalk.white('正在生成'));
       try {
         await generateCrudTemplate(resource, targetDirection);
@@ -131,12 +113,9 @@ const main = async () => {
       break;
     }
     case Action.INIT_FROM_REPO: {
+      // 从github下载
       const repo = flags.repo || 'caotsinghua/iview-admin-template';
       const targetPath = flags.path;
-      // if (!repo) {
-      //   log(chalk.bgRed('没有指定--repo'));
-      //   return;
-      // }
       if (!targetPath) {
         log(chalk.bgRed('没有指定--path'));
         return;

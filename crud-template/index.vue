@@ -45,28 +45,18 @@
 
 <script>
 import HeaderSearch from './components/header-search';
-import TableExpandRow from './components/table-expand-row';
 import EditModal from './components/edit-modal';
 import store from './store';
 export default {
   name: '{{resourceName}}-table',
   components: {
     HeaderSearch,
-    TableExpandRow,
     EditModal
   },
   data() {
     return {
       storeState: store.state,
       columns: [
-        // {
-        //     type: 'expand',
-        //     width: 50,
-        //     render: (h, { row }) =>
-        //         h(TableExpandRow, {
-        //             props: { row }
-        //         })
-        // },
         {
           type: 'selection',
           width: 60,

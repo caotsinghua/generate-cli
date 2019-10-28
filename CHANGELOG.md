@@ -1,3 +1,11 @@
+### 1.0.13
+
+_19.10.28_
+
+- 取消本地 admin-template
+- 生成 crud 时，目录直接为 resource，不加 s
+- crud 请求资源转化-为camelCase
+
 ### 1.0.12
 
 _19.9.23_

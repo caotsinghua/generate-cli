@@ -60,7 +60,7 @@ exports.generateAdminTemplateFromRepo = (repoName, targetDir) => {
     });
 };
 handlebars_1.default.registerHelper('upperFirst', str => {
-    return lodash_1.default.upperFirst(str);
+    return lodash_1.default.upperFirst(lodash_1.default.camelCase(str));
 });
 exports.generateCrudTemplate = (resourceName, destination) => {
     return new Promise((resolve, reject) => {

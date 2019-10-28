@@ -45,14 +45,12 @@
 
 <script>
 import HeaderSearch from './components/header-search';
-import TableExpandRow from './components/table-expand-row';
 import EditModal from './components/edit-modal';
 import { mapState, mapActions } from 'vuex';
 export default {
   name: '{{resourceName}}-table',
   components: {
     HeaderSearch,
-    TableExpandRow,
     EditModal
   },
   computed: {
@@ -61,14 +59,6 @@ export default {
   data() {
     return {
       columns: [
-        // {
-        //   type: 'expand',
-        //   width: 50,
-        //   render: (h, { row }) =>
-        //     h(TableExpandRow, {
-        //       props: { row }
-        //     })
-        // },
         {
           type: 'selection',
           width: 60,
