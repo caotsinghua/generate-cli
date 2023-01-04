@@ -22,7 +22,7 @@
     "commander": "^2.20.0",
     "download-git-repo": "^2.0.0",
     "handlebars": "^4.1.2",
-    "import-jsx": "^2.0.0",
+    "import-jsx": "^4.0.1",
     "ink": "^2.3.0",
     "ink-confirm-input": "^1.0.3",
     "ink-select-input": "^3.1.2",
